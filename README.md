@@ -1,5 +1,4 @@
 # IRIS
-#### INTRODUCTION
 Iris dataset is a multivariate dataset introduced by British statistician and biologist Ronald Fisher 
 in his 1936 paper. It includes three iris species (Iris setosa, Iris Virginica, Iris versicolor) with 50 
 samples each as well as some properties about each flower. One flower species is linearly 
@@ -14,8 +13,8 @@ Attribute Information is given below:
   5. Class: (Iris Setosa , Iris Virginica, Iris Versicolor)
   
 #### OBJECTIVE
-Download Iris dataset from the UCI repository and compare the results of at least two data 
-analytics techniques. Here Decision tree ,Random Forest and Naïve Bayes techniques of 
+Download Iris dataset from the UCI repository and compare the results of data 
+analytic techniques. Here Decision tree ,Random Forest, Naïve Bayes, Logistic regression techniques of 
 Classification are used for comparison.
 #### IMPORTING THE DATASET
 
@@ -30,7 +29,7 @@ Classification are used for comparison.
 A visual representation of how the data points are distributed with respect to the frequency.
 Analysis with the histogram:
 
-![visualization]()
+![visualization](https://github.com/Athira-M-Chandran/Images/blob/main/iris_visualization.jpeg?raw=true)
 
 * The distribution of Iris-Setosa petal is completely different from other 2 species
 * The species can’t be separated from one another using sepal features since the 
@@ -55,12 +54,14 @@ the species of iris flower.
   
 `fit<- rpart(class~ ., method = "class", data = train_data,  control = rpart.control(cp = 0), parms = list(split="information"))`<br>
 `rpart.plot(fit,type= 4 , extra=1)`<br>
-![Decision tree]() <br>
+![Decision tree](https://github.com/Athira-M-Chandran/Images/blob/main/iris_tree.jpeg?raw=true) <br>
 Checking the accuracy using a confusion matrix by comparing predictions to actual 
 classifications. ‘caret’ package is used for confusion matrix.
  
 `iris_pred <- predict(object = fit, newdata = test_data, type = "class") #test data is used for prediction`<br>
 `confusionMatrix(data = as.factor(iris_pred), reference = as.factor(test_data$class))`
+
+![confusion matrix of decision tree](https://github.com/Athira-M-Chandran/Images/blob/main/iris_dt_cm.png?raw=true)
 
 #### ACCURACY
 Model has achieved 93.33% accuracy from confusion matrix!
@@ -79,13 +80,17 @@ Verifying performance using ‘randomForest’ package.
 `print(iris_random)`<br>
 `print (importance(iris_random,type = 2))`<br>
 
+![random forest](https://github.com/Athira-M-Chandran/Images/blob/main/iris_random1.png?raw=true)
+
 GINI is a measure of node impurity. From the above details it is clear that Petal features are 
 more important compared to sepal features since the values are too small for sepal features 
 (4.24 and 0.38) and the error rate is 1.11%. So, we can eliminate sepal feature and check the 
 accuracy again.
 
-`iris_random1<- randomForest(iris_train_class ~ petal.length + petal.width, data = train_data )`<br>
+`iris_random1 <- randomForest(iris_train_class ~ petal.length + petal.width, data = train_data )`<br>
 `print(iris_random1)`<br>
+
+![iris_random1](https://github.com/Athira-M-Chandran/Images/blob/main/iris_random2.png?raw=true)
 
 In above table the error rate is 4.44%.
 
@@ -94,6 +99,8 @@ classifications. ‘caret’ package is used for confusion matrix.
 
 `iris_pred_rand <- predict(object = iris_random1, newdata = test_data, type = "class")` <br>
 `confusionMatrix(data = as.factor(iris_pred_rand), reference = as.factor(iris_test_class))`
+
+![Confusion matrix of random forest](https://github.com/Athira-M-Chandran/Images/blob/main/iris_rnd_cm.png?raw=true)
 
 #### ACCURACY
 
@@ -108,6 +115,7 @@ independence among predictors. For Naïve Bayes model , ‘e1071’ package is u
 `y_pred <- predict(classifier_cl, newdata = test_data) #predicting on test data` <br>
 `cm <- table(test_data$class, y_pred) #for confusion matrix` <br>
 `confusionMatrix(cm) #model evaluation` <br>
+![confusion matrix of naive bayes](https://github.com/Athira-M-Chandran/Images/blob/main/iris_naive_cm.png?raw=true)
 
 #### ACCURACY
 In above result the accuracy is 0.95
@@ -143,25 +151,16 @@ taken as 0.
 Checking the accuracy using confusion matrix
 
 `confusionMatrix(as.factor(iris_glm), as.factor(iris_dataset_class))`
+![confusion matrix of logistic regression](https://github.com/Athira-M-Chandran/Images/blob/main/iris_log_cm.png?raw=true)
 
 #### ACCURACY
 In the above result accuracy is 1 <br>
 i.e., our model has achieved 100% accuracy!
 
 ### INFERENCE
-Accuracy:
- Decision tree - 93.33%
- Random Forest - 93.33%
- Naive Bayes   - 95%
- Logistic Regression - 100%
+Accuracy: <br>
+ Decision tree - 93.33% <br>
+ Random Forest - 93.33% <br>
+ Naive Bayes   - 95% <br>
+ Logistic Regression - 100%<br>
 From above result it is evident that Logistic Regression is more accurate!
-
-
-
-
-
-
-  
-        
-  
-  
