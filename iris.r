@@ -32,7 +32,7 @@ iris<- read.csv("c:/data/iris.csv")
 
 #For Viewing dataset
 
-View(iris)    
+View(iris)   
 str(iris)     #view structure of dataset
 summary(iris) #view statistical summary of dataset
 head(iris)    #view top 6 rows of dataset
