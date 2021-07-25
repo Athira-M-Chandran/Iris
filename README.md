@@ -48,7 +48,7 @@ To increase the adaptability of the model, the entire data is divided into "trai
 
 Decision tree is a type of supervised learning algorithm mostly used for classification problem. 
 This algorithm split the data into two or more homogeneous sets based on the most significant 
-attributes making the group as distinct as possible.<BR>
+attributes making the group as distinct as possible.<br>
 In R, rpart is for modeling decision trees and rpart.plot package enables the plotting of a tree. 
 To predict which factors such as sepal length, sepal width , petal length, petal width determine 
 the species of iris flower.
@@ -63,8 +63,102 @@ classifications. ‘caret’ package is used for confusion matrix.
 `confusionMatrix(data = as.factor(iris_pred), reference = as.factor(test_data$class))`
 
 #### ACCURACY
-Model has achieved 95% accuracy from confusion matrix!
-  
+Model has achieved 93.33% accuracy from confusion matrix!
+
+### 2. RANDOM FOREST
+Verifying performance using ‘randomForest’ package.
+
+`iris_train_class <- factor(train_data$class,`<br> 
+                     `levels = c ('Iris-setosa', 'Iris-versicolor', 'Iris-virginica'), `<br>
+                     `labels = c (1, 2, 3)) `<br>
+`iris_test_class <- factor(test_data$class,`<br> 
+                     `levels = c ('Iris-setosa', 'Iris-versicolor', 'Iris-virginica'), `<br>
+                     `labels = c (1, 2, 3))`<br> 
+ 
+`iris_random <- randomForest(iris_train_class ~ .,  data = train_data)`<br>
+`print(iris_random)`<br>
+`print (importance(iris_random,type = 2))`<br>
+
+GINI is a measure of node impurity. From the above details it is clear that Petal features are 
+more important compared to sepal features since the values are too small for sepal features 
+(4.24 and 0.38) and the error rate is 1.11%. So, we can eliminate sepal feature and check the 
+accuracy again.
+
+`iris_random1<- randomForest(iris_train_class ~ petal.length + petal.width, data = train_data )`<br>
+`print(iris_random1)`<br>
+
+In above table the error rate is 4.44%.
+
+Checking the accuracy using a confusion matrix by comparing predictions to actual 
+classifications. ‘caret’ package is used for confusion matrix.
+
+`iris_pred_rand <- predict(object = iris_random1, newdata = test_data, type = "class")` <br>
+`confusionMatrix(data = as.factor(iris_pred_rand), reference = as.factor(iris_test_class))`
+
+#### ACCURACY
+
+In above result, the accuracy is 0.9333  
+So, the accuracy for this model is (0.9333 * 100)% =93.33% 
+
+### 3. NAIVE BAYES MODEL
+Naive Bayes is a classification technique based on Bayes’ Theorem with an assumption of 
+independence among predictors. For Naïve Bayes model , ‘e1071’ package is used. 
+
+`classifier_cl <- naiveBayes(class ~ ., data = train_data)`<br>
+`y_pred <- predict(classifier_cl, newdata = test_data) #predicting on test data` <br>
+`cm <- table(test_data$class, y_pred) #for confusion matrix` <br>
+`confusionMatrix(cm) #model evaluation` <br>
+
+#### ACCURACY
+In above result the accuracy is 0.95
+Accuracy of model is (0.95 * 100 )= 95%
+
+### 4. LOGISTIC REGRESSION
+We are taking first two classes from dataset, I.e, iris setosa and iris versicolor since the response 
+variable in logistic regression should be categorical values.
+
+`iris_dataset <- iris[1:100,]`
+
+Iris setosa is labelled as 0 and iris versicolor is labelled as 1.
+
+`iris_dataset_class <- factor(iris_dataset$class,`<br>
+                             `levels = c ('Iris-setosa', 'Iris-versicolor'), `<br>
+                             `labels = c (0,1)) `<br>
+
+Computing logistic regression using Generalized linear model function.
+
+`iris_log <- glm(iris_dataset_class ~ . , family = binomial(link = "logit"), data = iris_dataset)`<br>
+`summary(iris_log)    # Output`  
+
+Checking the accuracy using a confusion matrix by comparing predictions to actual 
+classifications. ‘caret’ package is used for confusion matrix.
+
+`iris_pred_log <- predict(object = iris_log, newdata = iris_dataset, type = "response")`
+
+Since the values vary from 0 to 1, values above 0.5 are taken as 1 and values below 0.5 are 
+taken as 0.
+
+`iris_glm <- ifelse(iris_pred_log > 0.5 , 1, 0)`
+
+Checking the accuracy using confusion matrix
+
+`confusionMatrix(as.factor(iris_glm), as.factor(iris_dataset_class))`
+
+#### ACCURACY
+In the above result accuracy is 1 <br>
+i.e., our model has achieved 100% accuracy!
+
+### INFERENCE
+Accuracy:
+ Decision tree - 93.33%
+ Random Forest - 93.33%
+ Naive Bayes   - 95%
+ Logistic Regression - 100%
+From above result it is evident that Logistic Regression is more accurate!
+
+
+
+
 
 
   
